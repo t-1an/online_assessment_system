@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.assessment.dao.LogicDao">
+
+    <insert id="saveLogicList" parameterType="java.util.List">
+        INSERT INTO logic
+        (
+        logic_id,
+        id,
+        logic_title,
+        template_id,
+        assessment_id,
+        condition_string,
+        action_string,
+        type
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.logicId},
+            #{item.id},
+            #{item.logicTitle},
+            #{item.templateId},
+            #{item.assessmentId},
+            #{item.conditionString},
+            #{item.actionString},
+            #{item.type}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteLogicByTemplateId">
+        DELETE
+        FROM logic
+        WHERE template_id = #{templateId}
+    </delete>
+
+    <delete id="deleteLogicByAssessmentId">
+        DELETE
+        FROM logic
+        WHERE assessment_id = #{assessmentId}
+    </delete>
+
+    <select id="getLogicListByTemplateId" resultType="com.xt.assessment.entity.Logic">
+        SELECT logic_id,
+               id,
+               logic_title,
+               template_id,
+               condition_string,
+               action_string
+        FROM logic
+        WHERE template_id = #{templateId}
+          AND type = 'template'
+        ORDER BY id
+    </select>
+
+    <select id="getLogicListByAssessmentId" resultType="com.xt.assessment.entity.Logic">
+        SELECT logic_id,
+               id,
+               logic_title,
+               template_id,
+               condition_string,
+               action_string
+        FROM logic
+        WHERE assessment_id = #{assessmentId}
+          AND type = 'assessment'
+        ORDER BY id
+    </select>
+
+</mapper>

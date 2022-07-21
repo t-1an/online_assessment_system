@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.assessment.dao.AssessmentDao">
+    <insert id="saveAssessment" keyProperty="assessmentId" keyColumn="assessmentId"
+            parameterType="com.xt.assessment.entity.Assessment">
+        INSERT INTO assessment (assessment_id,
+                                assessment_name,
+                                template_id,
+                                description,
+                                assessment_status,
+                                assessment_creator,
+                                to_user,
+                                to_email,
+                                to_user2,
+                                to_email2,
+                                assessment_create_date)
+        VALUES (#{assessmentId}, #{assessmentName}, #{templateId}, #{description}, #{assessmentStatus},
+                #{assessmentCreator}, #{toUser}, #{toEmail}, #{toUser2}, #{toEmail2}, #{assessmentCreateDate})
+    </insert>
+
+    <select id="getAssessmentList" resultType="com.xt.assessment.entity.Assessment">
+        SELECT assessment_id,
+               assessment_name,
+               template_id,
+               description,
+               assessment_status,
+               assessment_creator,
+               to_user,
+               to_email,
+               to_user2,
+               to_email2,
+               assessment_create_date
+        FROM assessment
+        ORDER BY assessment_create_date DESC
+    </select>
+
+    <delete id="deleteAssessment">
+        DELETE
+        FROM assessment
+        WHERE assessment_id = #{assessmentId}
+    </delete>
+
+    <update id="updateAssessment" keyProperty="assessmentId" keyColumn="assessmentId"
+            parameterType="com.xt.assessment.entity.Assessment">
+        UPDATE assessment
+        SET assessment_status = #{assessmentStatus}
+        WHERE template_id = #{templateId}
+    </update>
+
+    <select id="getAssessment" resultType="com.xt.assessment.entity.Assessment">
+        SELECT assessment_id,
+               assessment_name,
+               template_id,
+               description,
+               assessment_status,
+               assessment_creator,
+               to_user,
+               to_email,
+               to_user2,
+               to_email2,
+               assessment_create_date
+        FROM assessment
+        WHERE assessment_id = #{assessmentId}
+    </select>
+
+</mapper>

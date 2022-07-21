@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.assessment.dao.TemplateDao">
+
+    <select id="getTemplateList" resultType="com.xt.assessment.entity.Template">
+        SELECT template_id,
+               template_name,
+               description,
+               template_status,
+               template_creator,
+               template_create_date
+        FROM template
+        WHERE template_status in (0, 1, -1)
+        ORDER BY template_create_date DESC
+    </select>
+
+    <insert id="saveTemplate" keyProperty="templateId" keyColumn="templateId"
+            parameterType="com.xt.assessment.entity.Template">
+        INSERT INTO template(template_id,
+                             template_name,
+                             description,
+                             template_status,
+                             template_creator,
+                             template_create_date)
+        VALUES (#{templateId}, #{templateName}, #{description}, #{templateStatus}, #{templateCreator},
+                #{templateCreateDate})
+    </insert>
+
+    <update id="updateTemplate" keyProperty="templateId" keyColumn="templateId"
+            parameterType="com.xt.assessment.entity.Template">
+        UPDATE template
+        SET template_name = #{templateName},
+            description   = #{description}
+        WHERE template_id = #{templateId}
+    </update>
+
+    <delete id="deleteTemplate">
+        DELETE
+        FROM template
+        WHERE template_id = #{templateId}
+    </delete>
+
+    <select id="getTemplate" resultType="com.xt.assessment.entity.Template">
+        SELECT template_id,
+               template_name,
+               description,
+               template_status,
+               template_creator,
+               template_create_date
+        FROM template
+        WHERE template_id = #{templateId}
+    </select>
+
+    <update id="changeTemplateStatus">
+        UPDATE template
+        SET template_status = #{templateStatus}
+        WHERE template_id = #{templateId}
+    </update>
+
+</mapper>

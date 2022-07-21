@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.assessment.dao.AssetDao">
+    <insert id="addAsset" parameterType="com.xt.assessment.entity.Asset">
+        INSERT INTO asset(asset_id,
+                          asset_name,
+                          asset_type,
+                          asset_location,
+                          asset_status,
+                          is_major_asset,
+                          register_date,
+                          expire_date,
+                          comment,
+                          data_type,
+                          data_field,
+                          data_quantity,
+                          cross_border,
+                          to_third_party)
+        VALUES (#{assetId}, #{assetName}, #{assetType}, #{assetLocation}, #{assetStatus}, #{isMajorAsset},
+                #{registerDate}, #{expireDate}, #{comment}, #{dataType},#{dataField},#{dataQuantity},#{crossBorder},#{toThirdParty})
+    </insert>
+
+    <select id="getAssetList" resultType="com.xt.assessment.entity.Asset">
+        SELECT asset_id,
+               asset_name,
+               asset_type,
+               asset_location,
+               asset_status,
+               is_major_asset,
+               register_date,
+               expire_date,
+               comment,
+               data_type,
+               data_field,
+               data_quantity,
+               cross_border,
+               to_third_party
+        FROM asset
+        ORDER BY register_date DESC
+    </select>
+
+    <select id="getAsset" resultType="com.xt.assessment.entity.Asset">
+        SELECT asset_id,
+               asset_name,
+               asset_type,
+               asset_location,
+               asset_status,
+               is_major_asset,
+               register_date,
+               expire_date,
+               comment,
+               data_type,
+               data_field,
+               data_quantity,
+               cross_border,
+               to_third_party
+        FROM asset
+        WHERE asset_id = #{assetId}
+    </select>
+
+    <delete id="deleteAsset">
+        DELETE
+        FROM asset
+        WHERE asset_id = #{assetId}
+    </delete>
+</mapper>

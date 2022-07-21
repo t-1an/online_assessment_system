@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xt.assessment.dao.RiskDao">
+
+    <insert id="saveRisks" parameterType="java.util.List">
+        INSERT INTO risk
+        (
+        risk_id,
+        assessment_id,
+        id,
+        description,
+        score,
+        risk_status,
+        comment
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.riskId},
+            #{item.assessmentId},
+            #{item.id},
+            #{item.description},
+            #{item.score},
+            #{item.riskStatus},
+            #{item.comment}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteRisk">
+        DELETE
+        FROM risk
+        WHERE risk_id = #{riskId}
+    </delete>
+
+    <select id="getRiskList" resultType="com.xt.assessment.entity.Risk">
+        SELECT
+        r.risk_id,
+        r.assessment_id,
+        r.id,
+        r.description,
+        r.score,
+        r.risk_status,
+        r.comment,
+        a.assessment_name
+        FROM risk r, assessment a
+        WHERE r.assessment_id = a.assessment_id
+        <if test="assessmentId != null and assessmentId != ''">
+            AND r.assessment_id = #{assessmentId}
+        </if>
+        ORDER BY r.assessment_id , r.id
+    </select>
+
+    <select id="getRisk" resultType="com.xt.assessment.entity.Risk">
+        SELECT r.risk_id,
+               r.assessment_id,
+               r.id,
+               r.description,
+               r.score,
+               r.risk_status,
+               r.comment,
+               a.assessment_name
+        FROM risk r,
+             assessment a
+        WHERE r.risk_id = #{riskId}
+          AND r.assessment_id = a.assessment_id
+    </select>
+
+    <insert id="saveRiskLibrary" parameterType="com.xt.assessment.entity.RiskLibrary">
+        INSERT INTO riskLibrary (risk_library_id,
+                                 module,
+                                 name,
+                                 description,
+                                 inherent_level,
+                                 target_level,
+                                 type,
+                                 threaten,
+                                 leak,
+                                 plan,
+                                 status)
+        VALUES (#{riskLibraryId},
+                #{module},
+                #{name},
+                #{description},
+                #{inherentLevel},
+                #{targetLevel},
+                #{type},
+                #{threaten},
+                #{leak},
+                #{plan},
+                #{status})
+    </insert>
+
+    <select id="getRiskLibraryList" resultType="com.xt.assessment.entity.RiskLibrary">
+        SELECT risk_library_id,
+               module,
+               name,
+               description,
+               inherent_level,
+               target_level,
+               type,
+               threaten,
+               leak,
+               plan,
+               status
+        FROM
+            riskLibrary
+        ORDER BY module
+    </select>
+
+    <delete id="deleteRiskLibrary">
+        DELETE
+        FROM riskLibrary
+        WHERE risk_library_id = #{riskLibraryId}
+    </delete>
+</mapper>
